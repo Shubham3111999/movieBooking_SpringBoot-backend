@@ -1,50 +1,38 @@
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/bookmovie?createDatabaseIfNotExist=true
-    username: root
-    password: Shubham@3
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate.ddl-auto: update
-  
-  kafka:
-    bootstrap-servers: localhost:9092
-    consumer:
-      group-id: booking-group
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-      
+   datasource:
+      url: ${DATASOURCE_URL}
+      username: ${DATASOURCE_USERNAME}
+      password: ${DATASOURCE_PASSWORD}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+   jpa:
+      hibernate.ddl-auto: update
 
-  main:
-    allow-circular-references: true
-      
-      
-  
-  mail:
-    host: smtp.elasticemail.com
-    port: 2525
-    username: karan.more33345@gmail.com
-    password: D07ECDF7C71FB3896DF659672FBBD11C6666
-    protocol: smtp
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+   kafka:
+      bootstrap-servers: ${KAFKA_SERVER}
+      consumer:
+         group-id: booking-group
+         auto-offset-reset: earliest
+         key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+         value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      producer:
+         key-serializer: org.apache.kafka.common.serialization.StringSerializer
+         value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+
+   main:
+      allow-circular-references: true
 
 
 
-
-      
-            
-
-
-
-
-      
-
+   mail:
+      host: smtp.elasticemail.com
+      port: ${MAIL_PORT}
+      username: ${MAIL_USERNAME}
+      password: ${MAIL_PASSWORD}
+      protocol: smtp
+      properties:
+         mail:
+            smtp:
+               auth: true
+               starttls:
+                  enable: true

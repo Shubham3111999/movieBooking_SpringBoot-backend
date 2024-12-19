@@ -116,12 +116,12 @@ public class BookingService {
 
 		}
 
-	//	messagingTemplate.convertAndSend("/topic/seats", bookedSeat); // websocket
+		messagingTemplate.convertAndSend("/topic/seats/"+booking.getShow().getId(), booking.getSeats()); // websocket
 
-//		kafkaTemplate.send("cancelbooking",
-//				booking.getUser().getEmail() + ":" + booking.getShow().getMovie().getMovieName() + ":"
-//						+ booking.getShow().getTheater().getName() + ":" + booking.getShow().getTheater().getAddress()
-//						+ ":" + seatsString + ":" + booking.getTotalPrice());
+		kafkaTemplate.send("cancelbooking",
+				booking.getUser().getEmail() + ":" + booking.getShow().getMovie().getMovieName() + ":"
+						+ booking.getShow().getTheater().getName() + ":" + booking.getShow().getTheater().getAddress()
+						+ ":" + seatsString + ":" + booking.getTotalPrice());
 
 		bookingRepository.deleteById((long) bookingId);
 
