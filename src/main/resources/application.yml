@@ -1,23 +1,39 @@
 spring:
    datasource:
-      url: ${DATASOURCE_URL}
-      username: ${DATASOURCE_USERNAME}
-      password: ${DATASOURCE_PASSWORD}
+      url: ${DATASOURCE_URL:jdbc:mysql://localhost:3306/bookmovie?createDatabaseIfNotExist=true}
+      username: ${DATASOURCE_USERNAME:root}
+      password: ${DATASOURCE_PASSWORD:Shubham@3}
       driver-class-name: com.mysql.cj.jdbc.Driver
    jpa:
-      hibernate.ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    generate-ddl: true
+      
+      
+     
 
-   kafka:
-      bootstrap-servers: ${KAFKA_SERVER}
-      consumer:
-         group-id: booking-group
-         auto-offset-reset: earliest
-         key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-         value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      producer:
-         key-serializer: org.apache.kafka.common.serialization.StringSerializer
-         value-serializer: org.apache.kafka.common.serialization.StringSerializer
-
+#   kafka:
+#      bootstrap-servers: ${KAFKA_SERVER}
+#      consumer:
+#         group-id: booking-group
+#         auto-offset-reset: earliest
+#         key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#         value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      producer:
+#         key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#         value-serializer: org.apache.kafka.common.serialization.StringSerializer
+   rabbitmq:
+    uri: ${rabbitmq_uri:amqps://crriowln:FcTMeTBWOqJSjcCRm4Aanwm6K3540VC5@fuji.lmq.cloudamqp.com/crriowln}
+    connection-timeout: 5000
+    addresses: ${rabbitmq_addresses:fuji.lmq.cloudamqp.com}
+    username: ${rabbitmq_username:crriowln}
+    password: ${rabbitmq_password:FcTMeTBWOqJSjcCRm4Aanwm6K3540VC5}
+    virtual-host: ${rabbitmq_virtual-host:crriowln}
+    
 
    main:
       allow-circular-references: true
@@ -26,9 +42,9 @@ spring:
 
    mail:
       host: smtp.elasticemail.com
-      port: ${MAIL_PORT}
-      username: ${MAIL_USERNAME}
-      password: ${MAIL_PASSWORD}
+      port: ${MAIL_PORT:2525}
+      username: ${MAIL_USERNAME:karan.more33345@gmail.com}
+      password: ${MAIL_PASSWORD:D07ECDF7C71FB3896DF659672FBBD11C6666}
       protocol: smtp
       properties:
          mail:
@@ -36,3 +52,8 @@ spring:
                auth: true
                starttls:
                   enable: true
+
+                  
+Front:
+   url: ${Front_URL:http://localhost:3000}
+   

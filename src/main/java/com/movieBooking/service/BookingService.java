@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -41,8 +42,11 @@ public class BookingService {
 	
 	
 
+//	@Autowired
+//	private KafkaTemplate<String, String> kafkaTemplate;
+	
 	@Autowired
-	private KafkaTemplate<String, String> kafkaTemplate;
+	private  RabbitTemplate rabbitTemplate;
 
 	@Autowired
 	private SimpMessagingTemplate messagingTemplate;
@@ -89,10 +93,10 @@ public class BookingService {
 		booking.setTotalPrice(totalPrice);
 		booking.setBookingDateAndTime(LocalDateTime.now());
 
-//		kafkaTemplate.send("booking",
-//				booking.getUser().getEmail() + ":" + booking.getShow().getMovie().getMovieName() + ":"
-//						+ booking.getShow().getTheater().getName() + ":" + booking.getShow().getTheater().getAddress()
-//						+ ":" + seatsString + ":" + booking.getTotalPrice());
+		rabbitTemplate.convertAndSend("booking-exchange", "booking.key",
+				booking.getUser().getEmail() + ":" + booking.getShow().getMovie().getMovieName() + ":"
+						+ booking.getShow().getTheater().getName() + ":" + booking.getShow().getTheater().getAddress()
+						+ ":" + seatsString + ":" + booking.getTotalPrice());
 
 		messagingTemplate.convertAndSend("/topic/seats/"+bookingDto.getShowId(), seats); // websocket
 
@@ -118,7 +122,7 @@ public class BookingService {
 
 		messagingTemplate.convertAndSend("/topic/seats/"+booking.getShow().getId(), booking.getSeats()); // websocket
 
-		kafkaTemplate.send("cancelbooking",
+		rabbitTemplate.convertAndSend("booking-exchange", "cancelbooking.key",
 				booking.getUser().getEmail() + ":" + booking.getShow().getMovie().getMovieName() + ":"
 						+ booking.getShow().getTheater().getName() + ":" + booking.getShow().getTheater().getAddress()
 						+ ":" + seatsString + ":" + booking.getTotalPrice());
